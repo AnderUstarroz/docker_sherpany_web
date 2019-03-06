@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block title %}Title{% endblock title %}
+
+{% block content %}
+    <div><a href="{% url 'add_event' %}">+ Create Event</a></div>
+    <ul>
+        {% for event in events %}
+            <li><a href="{% url 'event' event.pk %}">{{ event.date|date:"M d, Y H:i" }} {{ event.title }} ({{ event.participants.count }} participants)</a> by <span class="author">{{ event.user.author }}</span> </li>
+        {% endfor %}
+    </ul>
+    <div class="pagination">
+        <span class="step-links">
+            {% if events.has_previous %}
+                <a class="button" href="?page=1">&laquo; first</a>
+                <a class="button" href="?page={{ events.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ events.number }} of {{ events.paginator.num_pages }}.
+            </span>
+
+            {% if events.has_next %}
+                <a class="button" href="?page={{ events.next_page_number }}">next</a>
+                <a class="button" href="?page={{ events.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+{% endblock content %}

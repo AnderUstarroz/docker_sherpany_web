@@ -1,0 +1,70 @@
+version: '3'
+
+services:
+
+  nginx:
+    image: nginx:1.15
+    restart: always
+    ports:
+      - 8000:80
+    volumes:
+      - ./config/nginx/conf.d:/etc/nginx/conf.d
+      - static_volume:/web/static
+      - media_volume:/web/media
+      - sockets_volume:/web/sockets
+    depends_on:
+      - web
+    networks:
+      - nginx_network
+
+  web:
+    restart: always
+    #tty: true
+    build: .
+    environment:
+      - WEB_ENV=production
+    volumes:
+      - ./sherpany_events:/web
+      - static_volume:/web/static
+      - media_volume:/web/media
+      - sockets_volume:/web/sockets
+    networks:
+      - nginx_network
+      - database1_network
+      - cache1_network
+    depends_on:
+      - database1
+      - cache1
+
+  database1:
+    image: postgres:10
+    env_file:
+      - config/db/database1_env
+    networks:
+      - database1_network
+    volumes:
+      - database1_volume:/var/lib/postgresql/data
+
+  cache1:
+    image: redis:4
+    hostname: redis
+    networks:
+      - cache1_network
+    volumes:
+      - cache1_data:/data
+
+networks:
+  nginx_network:
+    driver: bridge
+  database1_network:
+    driver: bridge
+  cache1_network:
+    driver: bridge
+
+volumes:
+  cache1_data:
+  database1_volume:
+  static_volume:
+  media_volume:
+  sockets_volume:
+

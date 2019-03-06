@@ -1,0 +1,18 @@
+{% load static %}
+<!doctype html>
+<html>
+    <head>
+        <title>Events</title>
+        <link href="{% static 'event/css/styles.css' %}?v=1.0" rel="stylesheet" type="text/css" />
+        <script type="application/javascript" src="{% static 'event/js/jquery-3.3.1.min.js' %}"></script>
+    </head>
+    <body>
+        {% block header %}
+            {% include 'header.html' %}
+        {% endblock header %}
+        <div class="block-content">
+            {% block content %}{% endblock content %}
+        </div>
+        <footer></footer>
+    </body>
+</html>

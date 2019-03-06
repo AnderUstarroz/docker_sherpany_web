@@ -1,0 +1,11 @@
+{% if not request.user.is_authenticated %}
+    <ul class="header-menu">
+        <li><a class="button" href="{% url 'login' %}">Login</a></li>
+        <li><a class="button" href="{% url 'register' %}">Register</a></li>
+    </ul>
+{% else %}
+    <ul class="header-menu">
+        <li><a class="button" href="{% url 'logout' %}">Logout</a></li>
+        <li><a class="button" href="{% url 'events' %}">All Events</a></li>
+    </ul>
+{% endif %}

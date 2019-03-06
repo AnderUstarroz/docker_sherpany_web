@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% block title %}Title{% endblock title %}
+
+{% block content %}
+    {% if event %}
+        <div>Created by {{ event.user.author }} ({{ event.date|date:"M d, Y H:i" }})</div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <p>
+                {{ field.label_tag }}<br>
+                {{ field }}
+                {% for error in field.errors %}
+                    <p style="color: red">{{ error }}</p>
+                {% endfor %}
+            </p>
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+            <div style="color: red"><strong>{{ error|escape }}</strong></div>
+        {% endfor %}
+
+        {% if request.user.pk == event.user_id %}<button class="button" type="submit">Submit</button>{% endif %}
+
+    </form>
+
+
+    <div class="checkbox-style"><label for="going">You are going</label>
+        <input id="going" type="checkbox" {% if request.user in event.participants.all %}
+               checked="checked" {% endif %}></div>
+    {% if event.participants.count %}
+        <h3>{{ event.participants.count }} Participants</h3>
+
+        <ul>
+            {% for participant in event.participants.all %}
+                <li>{{ participant.author }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <script>
+        $(function () {
+            $('#going').change(function () {
+                going = (this.checked) ? 1 : 0;
+                $.ajax({
+                    url: "{% url 'participation'  event.pk %}",
+                    method: "POST",
+                    data: {
+                        going: going
+                    },
+                });
+
+            });
+
+        });
+
+    </script>
+
+{% endblock content %}

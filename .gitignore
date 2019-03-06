@@ -1,0 +1,5 @@
+.idea
+sherpany_events/uwsgi.pid
+sherpany_events/logs
+*.db
+__pycache__
