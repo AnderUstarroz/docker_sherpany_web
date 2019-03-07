@@ -14,19 +14,19 @@ Build the project
 + Run database migrations:
 
   ``docker-compose exec web python manage.py migrate``
-+ Collect static assets to improve stiles a bit:
++ Collect static assets to improve styles a bit:
 
   ``docker-compose exec web python manage.py collectstatic --noinput``
 
 Run the tests
 -------------
-Fur running the tests (Note.- Containers must be running):
+For running the tests (Note.- Containers must be running):
 
 ``docker-compose exec web pytest``
 
 Tear down the project
 ---------------------
-When you are finished run the following command to destroy all docker containers,
+When you are finished run the following command to clean up your machine, destroying all docker containers,
 networks and volumes:
 
   ``docker-compose down -v``

@@ -7,6 +7,7 @@ from django.http import Http404
 from django.http import JsonResponse
 from django.core.exceptions import SuspiciousOperation
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 from user.models import User
 
 
@@ -58,7 +59,7 @@ def participation(request, id):
 @login_required(login_url='login')
 def events(request):
     events_list = Event.objects.select_related('user').prefetch_related('participants').all()
-    paginator = Paginator(events_list, 10)
+    paginator = Paginator(events_list, settings.PAGINATION)
     return render(
         request,
         'event/events.html',
