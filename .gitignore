@@ -1,5 +1,5 @@
 .idea
 sherpany_events/uwsgi.pid
-sherpany_events/logs
+sherpany_events/logs/*.log
 *.db
 __pycache__
